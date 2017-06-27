@@ -28,6 +28,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             })
         )
         
+        // Store user in cache, automatically log in
+        if let currentUser = PFUser.current() {
+            print("Welcome back, \(currentUser.username!)")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let feedNavController = storyboard.instantiateViewController(withIdentifier: "FeedNavController")
+            window?.rootViewController = feedNavController
+        }
+        
+        // Log user out
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("logoutNotification"), object: nil, queue: OperationQueue.main) { (Notification) in
+            // Take user to logout screen
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
+            self.window?.rootViewController = loginViewController
+        }
+
         return true
     }
 

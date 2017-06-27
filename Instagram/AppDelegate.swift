@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             })
         )
         
-        // Store user in cache, automatically log in
+        // Persist user
         if let currentUser = PFUser.current() {
             print("Welcome back, \(currentUser.username!)")
             let storyboard = UIStoryboard(name: "Main", bundle: nil)

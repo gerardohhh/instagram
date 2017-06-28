@@ -130,7 +130,8 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
             // Post image
             Post.postUserImage(image: resizedImage, withCaption: captionText.text, withCompletion: { (success: Bool, error: Error?) in
                 if success {
-                    // Clear post data
+                    // Clear post data, hide keyboard
+                    self.view.endEditing(true)
                     self.newPostImage.image = nil
                     self.imageButton.isHidden = false
                 } else {

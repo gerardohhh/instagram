@@ -14,6 +14,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableView: UITableView!
     
     var posts: [PFObject] = []
+    // Initialize a UIRefreshControl
+    let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,28 +27,16 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         imageView.image = logo
         self.navigationItem.titleView = imageView
         
+        // Set up refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
         
         // Query database
-        let query = PFQuery(className: "Post")
-        query.addDescendingOrder("createdAt")
-        query.includeKey("author")
-        query.findObjectsInBackground { (loadedPosts: [PFObject]?, error:Error?) in
-            if error == nil {
-                self.posts = loadedPosts!
-                self.tableView.reloadData()
-            } else {
-                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription.capitalized, preferredStyle: .alert)
-                let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
-                }
-                alertController.addAction(cancelAction)
-                self.present(alertController, animated: true)
-            }
-        }
-        
-        tableView.reloadData()
+        fetchPosts()
     }
 
     override func didReceiveMemoryWarning() {
@@ -81,6 +71,35 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         return cell
+    }
+    
+    func fetchPosts() {
+        let query = PFQuery(className: "Post")
+        query.addDescendingOrder("createdAt")
+        query.includeKey("author")
+        query.findObjectsInBackground { (loadedPosts: [PFObject]?, error:Error?) in
+            if error == nil {
+                self.posts = loadedPosts!
+                self.tableView.reloadData()
+            } else {
+                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription.capitalized, preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                }
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true)
+            }
+        }
+        
+        tableView.reloadData()
+    }
+    
+    // Makes a network request to get updated data
+    // Updates the tableView with the new data
+    // Hides the RefreshControl
+    func refreshControlAction(_ refreshControl: UIRefreshControl) {
+        fetchPosts()
+        // Tell the refreshControl to stop spinning
+        refreshControl.endRefreshing()
     }
 
     /*

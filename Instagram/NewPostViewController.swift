@@ -9,16 +9,21 @@
 import UIKit
 import Parse
 
-class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
 
     @IBOutlet weak var newPostImage: UIImageView!
     @IBOutlet weak var imageButton: UIButton!
-    @IBOutlet weak var newPostCaption: UITextField!
+    @IBOutlet weak var captionText: UITextView!
+    
+    var textHasBeenEdited = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.newPostCaption.delegate = self
+        self.captionText.delegate = self
+        
+        captionText.text = "Write a caption..."
+        captionText.textColor = UIColor.lightGray
     }
 
     @IBAction func didTapImageButton(_ sender: Any) {
@@ -40,9 +45,20 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
         // Dispose of any resources that can be recreated.
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return false
+    @objc(textViewDidBeginEditing:) func textViewDidBeginEditing(_ captionText: UITextView) {
+        textHasBeenEdited = true
+        if captionText.textColor == UIColor.lightGray {
+            captionText.text = nil
+            captionText.textColor = UIColor.black
+        }
+    }
+    
+    @objc(textViewDidEndEditing:) func textViewDidEndEditing(_ captionText: UITextView) {
+        if captionText.text.isEmpty {
+            textHasBeenEdited = false
+            captionText.text = "Write a caption..."
+            captionText.textColor = UIColor.lightGray
+        }
     }
     
     // Select image
@@ -72,7 +88,16 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
         return newImage!
     }
     
-    func clearAndHome() {
+    // Hide keyboard
+    @IBAction func didTapScreen(_ sender: Any) {
+        self.view.endEditing(true)
+    }
+    
+    // Cancel post
+    @IBAction func didCancelPost(_ sender: Any) {
+        // Hide keyboard
+        self.view.endEditing(true)
+        
         // Clear post data
         newPostImage.image = nil
         imageButton.isHidden = false
@@ -81,28 +106,42 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
         NotificationCenter.default.post(name: NSNotification.Name("sentPostNotification"), object: nil)
     }
     
-    // Cancel post
-    @IBAction func didCancelPost(_ sender: Any) {
-        clearAndHome()
-    }
-    
     // Send post
     @IBAction func didSendPost(_ sender: Any) {
-        let newSize: CGSize = CGSize(width: 1000.0, height: 1000.0)
-        let resizedImage = resize(image: newPostImage.image!, newSize: newSize)
-        Post.postUserImage(image: resizedImage, withCaption: newPostCaption.text, withCompletion: { (success: Bool, error: Error?) in
-            if success {
-                self.clearAndHome()
-            } else {
-                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription.capitalized, preferredStyle: .alert)
-                let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
-                }
-                alertController.addAction(cancelAction)
-                self.present(alertController, animated: true)
-            }
+        if textHasBeenEdited == false {
+            captionText.text = ""
         }
-    ) }
-
+        // Check for attached image
+        if newPostImage.image != nil {
+            // Resize image
+            let newSize: CGSize = CGSize(width: 1000.0, height: 1000.0)
+            let resizedImage = resize(image: newPostImage.image!, newSize: newSize)
+            
+            // Post image
+            Post.postUserImage(image: resizedImage, withCaption: captionText.text, withCompletion: { (success: Bool, error: Error?) in
+                if success {
+                    // Clear post data
+                    self.newPostImage.image = nil
+                    self.imageButton.isHidden = false
+                } else {
+                    // Alert error
+                    let alertController = UIAlertController(title: "Error", message: error?.localizedDescription.capitalized, preferredStyle: .alert)
+                    let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                    }
+                    alertController.addAction(cancelAction)
+                    self.present(alertController, animated: true)
+                }
+            } )
+        } else {
+            // Ask user to select image
+            let alertController = UIAlertController(title: "Please select an image", message: "An image is required for posting", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
+            }
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true)
+        }
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -112,5 +151,4 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
         // Pass the selected object to the new view controller.
     }
     */
-
 }

@@ -1,5 +1,5 @@
 //
-//  FeedViewController.swift
+//  SettingsViewController.swift
 //  Instagram
 //
 //  Created by Gerardo Parra on 6/27/17.
@@ -9,17 +9,12 @@
 import UIKit
 import Parse
 
-class FeedViewController: UIViewController {
+class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Customize navigation bar
-        let logo = UIImage(named: "logo.png")
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = logo
-        self.navigationItem.titleView = imageView
+
+        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,8 +22,13 @@ class FeedViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func didLogOut(_ sender: Any) {
+        PFUser.logOutInBackground { (error: Error?) in
+        }
+        
+        NotificationCenter.default.post(name: NSNotification.Name("logoutNotification"), object: nil)
+    }
     
-
     /*
     // MARK: - Navigation
 

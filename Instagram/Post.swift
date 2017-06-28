@@ -34,6 +34,9 @@ class Post: NSObject {
         
         // Save object (following function will save the object in Parse asynchronously)
         post.saveInBackground(block: completion)
+        
+        // Send user home
+        NotificationCenter.default.post(name: NSNotification.Name("sentPostNotification"), object: nil)
     }
     
     /**

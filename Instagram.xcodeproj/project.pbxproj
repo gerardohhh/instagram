@@ -10,6 +10,7 @@
 		4AB722E3699E02D60AF26E91 /* Pods_InstagramUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE1C6BC5C6C2EF1F40F8AD0 /* Pods_InstagramUITests.framework */; };
 		7E2E05821F044FB40094FBEC /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2E05811F044FB30094FBEC /* ExploreCell.swift */; };
 		7E2E05841F04576C0094FBEC /* PostDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2E05831F04576C0094FBEC /* PostDetailsViewController.swift */; };
+		7E2E05861F04748E0094FBEC /* InfiniteScrollActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2E05851F04748E0094FBEC /* InfiniteScrollActivityView.swift */; };
 		7E4EB7681F0422F1007F9B02 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EB7671F0422F1007F9B02 /* ExploreViewController.swift */; };
 		7E4EB76B1F04271C007F9B02 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EB76A1F04271C007F9B02 /* FeedCell.swift */; };
 		7E706B3A1F02FE79003A35C0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E706B391F02FE79003A35C0 /* LoginViewController.swift */; };
@@ -52,6 +53,7 @@
 		7646D11ECBFD597E311CDFE8 /* Pods-InstagramUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramUITests/Pods-InstagramUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		7E2E05811F044FB30094FBEC /* ExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell.swift; sourceTree = "<group>"; };
 		7E2E05831F04576C0094FBEC /* PostDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDetailsViewController.swift; sourceTree = "<group>"; };
+		7E2E05851F04748E0094FBEC /* InfiniteScrollActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteScrollActivityView.swift; sourceTree = "<group>"; };
 		7E4EB7671F0422F1007F9B02 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		7E4EB76A1F04271C007F9B02 /* FeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		7E706B391F02FE79003A35C0 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 		7E4EB76C1F044EAC007F9B02 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7E2E05851F04748E0094FBEC /* InfiniteScrollActivityView.swift */,
 				7E4EB76A1F04271C007F9B02 /* FeedCell.swift */,
 				7E2E05811F044FB30094FBEC /* ExploreCell.swift */,
 			);
@@ -492,6 +495,7 @@
 				7E706B3C1F0307E3003A35C0 /* FeedViewController.swift in Sources */,
 				7E4EB7681F0422F1007F9B02 /* ExploreViewController.swift in Sources */,
 				7ED8FB111F03249700C79B36 /* Post.swift in Sources */,
+				7E2E05861F04748E0094FBEC /* InfiniteScrollActivityView.swift in Sources */,
 				7E4EB76B1F04271C007F9B02 /* FeedCell.swift in Sources */,
 				7ED033D91F021C5600968AB3 /* AppDelegate.swift in Sources */,
 				7E706B3E1F031286003A35C0 /* NewPostViewController.swift in Sources */,

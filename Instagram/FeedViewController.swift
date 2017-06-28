@@ -9,11 +9,15 @@
 import UIKit
 import Parse
 
-class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
     var posts: [PFObject] = []
+    var isMoreDataLoading = false
+    var loadingMoreView:InfiniteScrollActivityView?
+    var queryLimit = 15
+    var querySkip = 0
     
     // Initialize a UIRefreshControl
     let refreshControl = UIRefreshControl()
@@ -31,6 +35,16 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Set up refreshControl
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
+        
+        // Set up Infinite Scroll loading indicator
+        let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView = InfiniteScrollActivityView(frame: frame)
+        loadingMoreView!.isHidden = true
+        tableView.addSubview(loadingMoreView!)
+        
+        var insets = tableView.contentInset
+        insets.bottom += InfiniteScrollActivityView.defaultHeight
+        tableView.contentInset = insets
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -98,11 +112,16 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     // Query database for posts
     func fetchPosts() {
         let query = PFQuery(className: "Post")
+        query.limit = queryLimit
+        query.skip = querySkip
         query.addDescendingOrder("createdAt")
         query.includeKey("author")
         query.findObjectsInBackground { (loadedPosts: [PFObject]?, error:Error?) in
             if error == nil {
-                self.posts = loadedPosts!
+                self.posts += loadedPosts!
+                // Stop the loading indicator
+                self.loadingMoreView!.stopAnimating()
+                // Reload data
                 self.tableView.reloadData()
             } else {
                 let alertController = UIAlertController(title: "Error", message: error?.localizedDescription.capitalized, preferredStyle: .alert)
@@ -112,6 +131,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.present(alertController, animated: true)
             }
         }
+        // Update data loading flag
+        self.isMoreDataLoading = false
         
         tableView.reloadData()
     }
@@ -123,6 +144,30 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         fetchPosts()
         // Tell the refreshControl to stop spinning
         refreshControl.endRefreshing()
+    }
+    
+    // Add infite scrolling
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (!isMoreDataLoading) {
+            // Calculate the position of one screen length before the bottom of the results
+            let scrollViewContentHeight = tableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+            
+            // When the user has scrolled past the threshold, start requesting
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
+                isMoreDataLoading = true
+                
+                // Update position of loadingMoreView, and start loading indicator
+                let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                loadingMoreView?.frame = frame
+                loadingMoreView!.startAnimating()
+                
+                // Code to load more results
+                queryLimit += 15
+                querySkip += 15
+                fetchPosts()
+            }
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

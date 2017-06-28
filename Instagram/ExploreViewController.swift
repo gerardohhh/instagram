@@ -15,11 +15,18 @@ class ExploreViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     var posts: [PFObject] = []
     
+    // Initialize a UIRefreshControl
+    let refreshControl = UIRefreshControl()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
+        
+        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
+        // add refresh control to table view
+        collectionView.insertSubview(refreshControl, at: 0)
         
         fetchPosts()
     }
@@ -70,6 +77,15 @@ class ExploreViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
         
         collectionView.reloadData()
+    }
+    
+    // Makes a network request to get updated data
+    // Updates the tableView with the new data
+    // Hides the RefreshControl
+    func refreshControlAction(_ refreshControl: UIRefreshControl) {
+        fetchPosts()
+        // Tell the refreshControl to stop spinning
+        refreshControl.endRefreshing()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

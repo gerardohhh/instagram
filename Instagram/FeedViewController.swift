@@ -62,14 +62,34 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.usernameLabel.text = user?.username
         cell.secondUserLabel.text = user?.username
         
-        // Set image
-        cell.profileImage.layer.cornerRadius =  19
+        // Set profile image
+        cell.profileImage.layer.cornerRadius =  15
+        if let profpic = user?["portrait"] as? PFFile {
+            profpic.getDataInBackground { (imageData: Data?, error: Error?) in
+                if error == nil {
+                    let profImage = UIImage(data: imageData!)
+                    cell.profileImage.image = profImage
+                }
+            }
+        }
+        
+        // Set post image
         let photo = post["media"] as! PFFile
         photo.getDataInBackground { (imageData: Data?, error: Error?) in
             if error == nil {
                 let image = UIImage(data: imageData!)
                 cell.photoImageView.image = image
             }
+        }
+        
+        // Set timestamp
+        if let date = post.createdAt {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .none
+            dateFormatter.locale = Locale(identifier: "en_US")
+            let dateString = dateFormatter.string(from: date as Date)
+            cell.timeLabel.text = dateString
         }
         
         return cell
@@ -105,14 +125,13 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         refreshControl.endRefreshing()
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let cell = sender as! UITableViewCell
+        if let indexPath = tableView.indexPath(for: cell) {
+            let post = posts[indexPath.row]
+            let detailViewController = segue.destination as! PostDetailsViewController
+            detailViewController.post = post
+        }
     }
-    */
 
 }

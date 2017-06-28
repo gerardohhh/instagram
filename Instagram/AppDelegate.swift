@@ -50,6 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let feedNavController = storyboard.instantiateViewController(withIdentifier: "FeedNavController")
             self.window?.rootViewController = feedNavController
         }
+        
+        // Remove back button titles
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60), for:UIBarMetrics.default)
 
         return true
     }

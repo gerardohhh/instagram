@@ -26,6 +26,10 @@ class LoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     @IBAction func onSignIn(_ sender: Any) {
         PFUser.logInWithUsername(inBackground: usernameField.text!, password: passwordField.text!) { (user: PFUser?, error: Error?) in
             if user != nil {
@@ -46,6 +50,8 @@ class LoginViewController: UIViewController {
         newUser.username = usernameField.text
         newUser.password = passwordField.text
         
+        newUser["portrait"] = getPFFileFromImage(image: #imageLiteral(resourceName: "profile-pic"))
+        
         newUser.signUpInBackground { (success: Bool, error: Error?) in
             if success {
                 self.performSegue(withIdentifier: "loginSegue", sender: nil)
@@ -57,6 +63,17 @@ class LoginViewController: UIViewController {
                 self.present(alertController, animated: true)
             }
         }
+    }
+    
+    func getPFFileFromImage(image: UIImage?) -> PFFile? {
+        // check if image is not nil
+        if let image = image {
+            // get image data and check if that is not nil
+            if let imageData = UIImagePNGRepresentation(image) {
+                return PFFile(name: "image.png", data: imageData)
+            }
+        }
+        return nil
     }
     
     /*

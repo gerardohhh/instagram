@@ -11,10 +11,25 @@ import Parse
 
 class SettingsViewController: UIViewController {
 
+    @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var usernameLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        self.profileImage.layer.cornerRadius = 50
+        
+        let user = PFUser.current()
+        self.title = user?.username
+        usernameLabel.text = user?.username
+        if let profpic = user?["portrait"] as? PFFile {
+            profpic.getDataInBackground { (imageData: Data?, error: Error?) in
+                if error == nil {
+                    let profImage = UIImage(data: imageData!)
+                    self.profileImage.image = profImage
+                }
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {

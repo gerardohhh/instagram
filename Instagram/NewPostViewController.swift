@@ -14,6 +14,7 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var newPostImage: UIImageView!
     @IBOutlet weak var imageButton: UIButton!
     @IBOutlet weak var captionText: UITextView!
+    @IBOutlet weak var shareButton: UIButton!
     
     var textHasBeenEdited = false
     
@@ -24,6 +25,8 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         captionText.text = "Write a caption..."
         captionText.textColor = UIColor.lightGray
+        
+        shareButton.layer.cornerRadius = 5
     }
 
     @IBAction func didTapImageButton(_ sender: Any) {
@@ -31,13 +34,20 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
         let vc = UIImagePickerController()
         vc.delegate = self
         vc.allowsEditing = true
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: {
+            action in
             vc.sourceType = .camera
-        } else {
+            self.present(vc, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: {
+            action in
             vc.sourceType = .photoLibrary
-        }
+            self.present(vc, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
-        self.present(vc, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -65,7 +75,7 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any]) {
         // Get the image captured by the UIImagePickerController
-        let originalImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        let originalImage = info[UIImagePickerControllerEditedImage] as! UIImage
         
         imageButton.isHidden = true
         newPostImage.image = originalImage

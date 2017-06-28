@@ -9,8 +9,12 @@
 import UIKit
 import Parse
 
-class FeedViewController: UIViewController {
-
+class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    var posts: [PFObject] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,6 +24,28 @@ class FeedViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         imageView.image = logo
         self.navigationItem.titleView = imageView
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        // Query database
+        let query = PFQuery(className: "Post")
+        query.addDescendingOrder("createdAt")
+        query.findObjectsInBackground { (loadedPosts: [PFObject]?, error:Error?) in
+            if error == nil {
+                self.posts = loadedPosts!
+                print("successfully fetched!")
+                self.tableView.reloadData()
+            } else {
+                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription.capitalized, preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                }
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true)
+            }
+        }
+        
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,7 +53,18 @@ class FeedViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return posts.count
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
+        let post = posts[indexPath.row]
+        
+        cell.captionLabel.text = (post["caption"] as! String)
+        
+        return cell
+    }
 
     /*
     // MARK: - Navigation

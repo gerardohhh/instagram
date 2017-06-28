@@ -29,8 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
         
         // Persist user
-        if let currentUser = PFUser.current() {
-            print("Welcome back, \(currentUser.username!)")
+        if PFUser.current() != nil {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let feedNavController = storyboard.instantiateViewController(withIdentifier: "FeedNavController")
             window?.rootViewController = feedNavController

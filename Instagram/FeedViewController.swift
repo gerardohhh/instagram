@@ -14,6 +14,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableView: UITableView!
     
     var posts: [PFObject] = []
+    
     // Initialize a UIRefreshControl
     let refreshControl = UIRefreshControl()
     
@@ -35,7 +36,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.separatorStyle = .none
         
-        // Query database
         fetchPosts()
     }
 
@@ -44,10 +44,12 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Dispose of any resources that can be recreated.
     }
     
+    // Return amount of tableView rows
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
     }
     
+    // Setup tableView cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
         let post = posts[indexPath.row]
@@ -73,6 +75,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
+    // Query database for posts
     func fetchPosts() {
         let query = PFQuery(className: "Post")
         query.addDescendingOrder("createdAt")

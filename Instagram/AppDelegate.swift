@@ -43,6 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
             self.window?.rootViewController = loginViewController
         }
+        
+        // Finish Post
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("sentPostNotification"), object: nil, queue: OperationQueue.main) { (Notification) in
+            // Take user to logout screen
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let feedNavController = storyboard.instantiateViewController(withIdentifier: "FeedNavController")
+            self.window?.rootViewController = feedNavController
+        }
 
         return true
     }

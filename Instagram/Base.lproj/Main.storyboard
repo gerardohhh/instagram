@@ -75,7 +75,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140" y="138.98050974512745"/>
+            <point key="canvasLocation" x="522" y="139"/>
         </scene>
         <!--Instagram-->
         <scene sceneID="DfX-wj-ISh">
@@ -121,7 +121,7 @@
             </objects>
             <point key="canvasLocation" x="2365.5999999999999" y="138.98050974512745"/>
         </scene>
-        <!--New Post View Controller-->
+        <!--New Post-->
         <scene sceneID="z7O-be-Y4c">
             <objects>
                 <viewController id="DtR-fM-Wjm" customClass="NewPostViewController" customModule="Instagram" customModuleProvider="target" sceneMemberID="viewController">
@@ -132,9 +132,50 @@
                     <view key="view" contentMode="scaleToFill" id="WlH-6A-hDl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N2c-fR-qFv">
+                                <rect key="frame" x="259" y="80" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.34625679221763606" green="0.4953908173102689" blue="0.61370207392019671" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </imageView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" placeholder="Write a caption..." textAlignment="natural" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="9vr-TQ-W7e">
+                                <rect key="frame" x="16" y="80" width="235" height="124"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N6E-YN-mFH">
+                                <rect key="frame" x="259" y="80" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="9"/>
+                                <state key="normal" title="Tap to select an image.">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapImageButton:" destination="DtR-fM-Wjm" eventType="touchUpInside" id="099-Ms-MTA"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="hzw-oV-LOs"/>
+                    <navigationItem key="navigationItem" title="New Post" id="hzw-oV-LOs">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="ExT-18-TPJ">
+                            <connections>
+                                <action selector="didCancelPost:" destination="DtR-fM-Wjm" id="oWx-kI-Jug"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Post" id="RY3-kC-9Ze">
+                            <connections>
+                                <action selector="didSendPost:" destination="DtR-fM-Wjm" id="5P6-nq-tdV"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="imageButton" destination="N6E-YN-mFH" id="yuz-Nx-vd1"/>
+                        <outlet property="newPostCaption" destination="9vr-TQ-W7e" id="TeZ-Kc-0M1"/>
+                        <outlet property="newPostImage" destination="N2c-fR-qFv" id="YEO-Es-elL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zow-Qo-D7y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

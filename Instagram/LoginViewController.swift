@@ -51,6 +51,7 @@ class LoginViewController: UIViewController {
         newUser.password = passwordField.text
         
         newUser["portrait"] = Post.getPFFileFromImage(image: #imageLiteral(resourceName: "profile-pic"))
+        newUser["about"] = "Tap photo and description to edit"
         
         newUser.signUpInBackground { (success: Bool, error: Error?) in
             if success {

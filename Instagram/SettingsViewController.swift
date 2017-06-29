@@ -9,14 +9,15 @@
 import UIKit
 import Parse
 
-class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate {
 
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var aboutLabel: UITextField!
     
     let user = PFUser.current()
-    let posts: [PFObject] = []
+    var posts: [PFObject] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,9 +26,12 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
+        self.aboutLabel.delegate = self
         
         self.title = user?.username
         usernameLabel.text = user?.username
+        let about = user?["about"] as? String
+        aboutLabel.text = about ?? "..."
         if let profpic = user?["portrait"] as? PFFile {
             profpic.getDataInBackground { (imageData: Data?, error: Error?) in
                 if error == nil {
@@ -36,6 +40,8 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
                 }
             }
         }
+        
+        fetchPosts()
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,6 +77,35 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         self.present(alert, animated: true, completion: nil)
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        aboutLabel.text = nil
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if aboutLabel.text == "" {
+            aboutLabel.text = "..."
+        }
+        user?["about"] = aboutLabel.text
+        user?.saveInBackground(block: { (success: Bool, error: Error?) in
+            if error != nil {
+                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription.capitalized, preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                }
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true)
+            }
+        })
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        aboutLabel.resignFirstResponder()
+        return true
+    }
+    
+    @IBAction func didTapScreen(_ sender: Any) {
+        self.view.endEditing(true)
+    }
+    
     // Select image
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -97,12 +132,34 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         dismiss(animated: true, completion: nil)
     }
     
+    // Query database for posts
+    func fetchPosts() {
+        let query = PFQuery(className: "Post")
+        query.addDescendingOrder("createdAt")
+        query.includeKey("author")
+        query.whereKey("author", equalTo: user!)
+        query.findObjectsInBackground { (loadedPosts: [PFObject]?, error:Error?) in
+            if error == nil {
+                self.posts = loadedPosts!
+                self.collectionView.reloadData()
+            } else {
+                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription.capitalized, preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                }
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true)
+            }
+        }
+        
+        collectionView.reloadData()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return posts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExploreCell", for: indexPath) as! ExploreCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileCell", for: indexPath) as! ExploreCell
         
         let post = posts[indexPath.item]
         
@@ -118,14 +175,13 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         return cell
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let cell = sender as! UICollectionViewCell
+        if let indexPath = collectionView.indexPath(for: cell) {
+            let post = posts[indexPath.row]
+            let detailViewController = segue.destination as! PostDetailsViewController
+            detailViewController.post = post
+        }
     }
-    */
 
 }

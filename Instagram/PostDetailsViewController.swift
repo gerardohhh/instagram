@@ -81,7 +81,7 @@ class PostDetailsViewController: UIViewController {
         likesAmount += 1
         likesLabel.text = "\(likesAmount) likes"
         post?["likesCount"] = likesAmount
-        if likesAmount % 2 != 0 {
+        if heartImage.backgroundColor == UIColor.white {
             heartImage.backgroundColor = UIColor.red
         } else {
             heartImage.backgroundColor = UIColor.white

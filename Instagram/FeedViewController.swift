@@ -201,13 +201,13 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     // Segue to details view
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let cell = sender as! UITableViewCell
-        if let indexPath = tableView.indexPath(for: cell) {
-            let post = posts[indexPath.row]
-            let detailViewController = segue.destination as! PostDetailsViewController
-            detailViewController.post = post
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        let cell = sender as! UITableViewCell
+//        if let indexPath = tableView.indexPath(for: cell) {
+//            let post = posts[indexPath.row]
+//            let detailViewController = segue.destination as! PostDetailsViewController
+//            detailViewController.post = post
+//        }
+//    }
 
 }

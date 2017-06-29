@@ -21,8 +21,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="launch" translatesAutoresizingMaskIntoConstraints="NO" id="dmn-R8-ikl">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" fixedFrame="YES" image="new-launch" translatesAutoresizingMaskIntoConstraints="NO" id="dmn-R8-ikl">
+                                <rect key="frame" x="0.0" y="1" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </imageView>
                         </subviews>
@@ -35,6 +35,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="launch" width="375" height="667"/>
+        <image name="new-launch" width="375" height="668"/>
     </resources>
 </document>

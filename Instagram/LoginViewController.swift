@@ -50,7 +50,7 @@ class LoginViewController: UIViewController {
         newUser.username = usernameField.text
         newUser.password = passwordField.text
         
-        newUser["portrait"] = getPFFileFromImage(image: #imageLiteral(resourceName: "profile-pic"))
+        newUser["portrait"] = Post.getPFFileFromImage(image: #imageLiteral(resourceName: "profile-pic"))
         
         newUser.signUpInBackground { (success: Bool, error: Error?) in
             if success {
@@ -63,17 +63,6 @@ class LoginViewController: UIViewController {
                 self.present(alertController, animated: true)
             }
         }
-    }
-    
-    func getPFFileFromImage(image: UIImage?) -> PFFile? {
-        // check if image is not nil
-        if let image = image {
-            // get image data and check if that is not nil
-            if let imageData = UIImagePNGRepresentation(image) {
-                return PFFile(name: "image.png", data: imageData)
-            }
-        }
-        return nil
     }
     
     /*

@@ -51,6 +51,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.separatorStyle = .none
         
         fetchPosts()
+        
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,6 +85,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if error == nil {
                     let profImage = UIImage(data: imageData!)
                     cell.profileImage.image = profImage
+                    cell.profileImage.clipsToBounds = true
                 }
             }
         }

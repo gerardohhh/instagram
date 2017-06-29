@@ -75,10 +75,10 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any]) {
         // Get the image captured by the UIImagePickerController
-        let originalImage = info[UIImagePickerControllerEditedImage] as! UIImage
+        let editedImage = info[UIImagePickerControllerEditedImage] as! UIImage
         
         imageButton.isHidden = true
-        newPostImage.image = originalImage
+        newPostImage.image = editedImage
         
         // Dismiss UIImagePickerController to go back to your original view controller
         dismiss(animated: true, completion: nil)

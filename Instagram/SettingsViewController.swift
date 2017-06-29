@@ -9,17 +9,18 @@
 import UIKit
 import Parse
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
+    
+    let user = PFUser.current()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.profileImage.layer.cornerRadius = 50
         
-        let user = PFUser.current()
         self.title = user?.username
         usernameLabel.text = user?.username
         if let profpic = user?["portrait"] as? PFFile {
@@ -27,6 +28,7 @@ class SettingsViewController: UIViewController {
                 if error == nil {
                     let profImage = UIImage(data: imageData!)
                     self.profileImage.image = profImage
+                    self.profileImage.clipsToBounds = true
                 }
             }
         }
@@ -42,6 +44,53 @@ class SettingsViewController: UIViewController {
         }
         
         NotificationCenter.default.post(name: NSNotification.Name("logoutNotification"), object: nil)
+    }
+    
+    @IBAction func didTapIcon(_ sender: Any) {
+        // Instantiate UIImagePickerController
+        let vc = UIImagePickerController()
+        vc.delegate = self
+        vc.allowsEditing = true
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: {
+            action in
+            vc.sourceType = .camera
+            self.present(vc, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: {
+            action in
+            vc.sourceType = .photoLibrary
+            self.present(vc, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // Select image
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [String : Any]) {
+        // Get the image captured by the UIImagePickerController
+        let editedImage = info[UIImagePickerControllerEditedImage] as! UIImage
+        
+        profileImage.image = editedImage
+        profileImage.clipsToBounds = true
+        
+        let imageFile = Post.getPFFileFromImage(image: editedImage)
+        user?["portrait"] = imageFile
+        
+        user?.saveInBackground(block: { (success: Bool, error: Error?) in
+            if error != nil {
+                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription.capitalized, preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                }
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true)
+            }
+        })
+        
+        // Dismiss UIImagePickerController to go back to your original view controller
+        dismiss(animated: true, completion: nil)
     }
     
     /*

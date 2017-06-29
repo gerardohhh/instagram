@@ -43,6 +43,7 @@ class PostDetailsViewController: UIViewController {
                     if error == nil {
                         let profImage = UIImage(data: imageData!)
                         self.profileImage.image = profImage
+                        self.profileImage.clipsToBounds = true
                     }
                 }
             }

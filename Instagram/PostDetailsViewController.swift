@@ -19,6 +19,7 @@ class PostDetailsViewController: UIViewController {
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var heartImage: UIImageView!
     
     var post: PFObject? = nil
     
@@ -35,6 +36,7 @@ class PostDetailsViewController: UIViewController {
             captionLabel.text = (post["caption"] as! String)
             let likesCount = (post["likesCount"] as! NSNumber)
             likesLabel.text = "\(likesCount) likes"
+            heartImage.layer.cornerRadius = 12.5
             
             // Set profile image
             profileImage.layer.cornerRadius =  15
@@ -73,6 +75,22 @@ class PostDetailsViewController: UIViewController {
         }
     }
 
+    @IBAction func didLikePost(_ sender: Any) {
+        var likesText = likesLabel.text ?? "0 likes"
+        var likesAmount = Int(String(likesText.characters.dropLast(6)))!
+        likesAmount += 1
+        likesLabel.text = "\(likesAmount) likes"
+        post?["likesCount"] = likesAmount
+        if likesAmount % 2 != 0 {
+            heartImage.backgroundColor = UIColor.red
+        } else {
+            heartImage.backgroundColor = UIColor.white
+        }
+        post?.saveInBackground(block: { (success: Bool, error: Error?) in
+            // TODO: add alerts
+        })
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

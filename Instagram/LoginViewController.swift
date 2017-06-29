@@ -66,6 +66,10 @@ class LoginViewController: UIViewController {
         }
     }
     
+    @IBAction func didTapScreen(_ sender: Any) {
+        self.view.endEditing(true)
+    }
+
     /*
     // MARK: - Navigation
 

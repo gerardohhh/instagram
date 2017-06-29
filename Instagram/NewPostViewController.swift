@@ -25,8 +25,8 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         captionText.text = "Write a caption..."
         captionText.textColor = UIColor.lightGray
-        
-        newPostImage.clipsToBounds = true
+    
+        newPostImage.layer.cornerRadius = 5
         
         shareButton.layer.cornerRadius = 5
     }

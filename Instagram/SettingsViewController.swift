@@ -101,7 +101,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         })
     }
     
-    // Hide keyboard on return
+    // Hide keyboard on return 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         aboutLabel.resignFirstResponder()
         return true

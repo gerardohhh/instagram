@@ -24,7 +24,8 @@ class FeedCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        likeImage.layer.cornerRadius = 12.5
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -39,6 +40,11 @@ class FeedCell: UITableViewCell {
         likesAmount += 1
         likesLabel.text = "\(likesAmount) likes"
         post?["likesCount"] = likesAmount
+        if likesAmount % 2 != 0 && likesAmount != 0 {
+            likeImage.backgroundColor = UIColor.red
+        } else {
+            likeImage.backgroundColor = UIColor.white
+        }
         post?.saveInBackground(block: { (success: Bool, error: Error?) in
             // TODO: add alerts
         })

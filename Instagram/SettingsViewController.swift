@@ -102,10 +102,6 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         return true
     }
     
-    @IBAction func didTapScreen(_ sender: Any) {
-        self.view.endEditing(true)
-    }
-    
     // Select image
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any]) {

@@ -26,6 +26,8 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
         captionText.text = "Write a caption..."
         captionText.textColor = UIColor.lightGray
         
+        newPostImage.clipsToBounds = true
+        
         shareButton.layer.cornerRadius = 5
     }
 
@@ -124,7 +126,7 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
         // Check for attached image
         if newPostImage.image != nil {
             // Resize image
-            let newSize: CGSize = CGSize(width: 1000.0, height: 1000.0)
+            let newSize: CGSize = CGSize(width: 750.0, height: 750.0)
             let resizedImage = resize(image: newPostImage.image!, newSize: newSize)
             
             // Post image

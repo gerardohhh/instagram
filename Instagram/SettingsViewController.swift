@@ -9,17 +9,22 @@
 import UIKit
 import Parse
 
-class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
 
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     let user = PFUser.current()
+    let posts: [PFObject] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.profileImage.layer.cornerRadius = 50
+        
+        self.collectionView.dataSource = self
+        self.collectionView.delegate = self
         
         self.title = user?.username
         usernameLabel.text = user?.username
@@ -28,7 +33,6 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
                 if error == nil {
                     let profImage = UIImage(data: imageData!)
                     self.profileImage.image = profImage
-                    self.profileImage.clipsToBounds = true
                 }
             }
         }
@@ -91,6 +95,27 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         
         // Dismiss UIImagePickerController to go back to your original view controller
         dismiss(animated: true, completion: nil)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return posts.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExploreCell", for: indexPath) as! ExploreCell
+        
+        let post = posts[indexPath.item]
+        
+        // Set image
+        let photo = post["media"] as! PFFile
+        photo.getDataInBackground { (imageData: Data?, error: Error?) in
+            if error == nil {
+                let image = UIImage(data: imageData!)
+                cell.exploreCellImage.image = image
+            }
+        }
+        
+        return cell
     }
     
     /*

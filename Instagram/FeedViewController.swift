@@ -85,7 +85,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if error == nil {
                     let profImage = UIImage(data: imageData!)
                     cell.profileImage.image = profImage
-                    cell.profileImage.clipsToBounds = true
                 }
             }
         }

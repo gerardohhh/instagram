@@ -114,6 +114,32 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     // Query database for posts
     func fetchPosts() {
         let query = PFQuery(className: "Post")
+        query.addDescendingOrder("createdAt")
+        query.includeKey("author")
+        query.findObjectsInBackground { (loadedPosts: [PFObject]?, error:Error?) in
+            if error == nil {
+                self.posts = loadedPosts!
+                // Stop the loading indicator
+                self.loadingMoreView!.stopAnimating()
+                // Reload data
+                self.tableView.reloadData()
+            } else {
+                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription.capitalized, preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                }
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true)
+            }
+        }
+        // Update data loading flag
+        self.isMoreDataLoading = false
+        
+        tableView.reloadData()
+    }
+    
+    // Query database for more posts
+    func fetchMorePosts() {
+        let query = PFQuery(className: "Post")
         query.limit = queryLimit
         query.skip = querySkip
         query.addDescendingOrder("createdAt")
@@ -167,7 +193,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 // Code to load more results
                 queryLimit += 15
                 querySkip += 15
-                fetchPosts()
+                fetchMorePosts()
             }
         }
     }

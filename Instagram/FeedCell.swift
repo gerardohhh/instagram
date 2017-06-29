@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class FeedCell: UITableViewCell {
 
@@ -17,6 +18,9 @@ class FeedCell: UITableViewCell {
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var likeImage: UIImageView!
+    
+    var post: PFObject? = nil
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,5 +32,15 @@ class FeedCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    
+    @IBAction func didLikePost(_ sender: Any) {
+        var likesText = likesLabel.text ?? "0 likes"
+        var likesAmount = Int(String(likesText.characters.dropLast(6)))!
+        likesAmount += 1
+        likesLabel.text = "\(likesAmount) likes"
+        post?["likesCount"] = likesAmount
+        post?.saveInBackground(block: { (success: Bool, error: Error?) in
+            // TODO: add alerts
+        })
+    }
 }

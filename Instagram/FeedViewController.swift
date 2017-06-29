@@ -12,10 +12,10 @@ import Parse
 class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    
-    var posts: [PFObject] = []
+
     var isMoreDataLoading = false
     var loadingMoreView:InfiniteScrollActivityView?
+    var posts: [PFObject] = []
     var queryLimit = 15
     var querySkip = 0
     
@@ -69,6 +69,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
         let post = posts[indexPath.row]
+        cell.post = post
         
         // Set text data
         cell.captionLabel.text = (post["caption"] as! String)
@@ -110,6 +111,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         return cell
     }
+    
     
     // Query database for posts
     func fetchPosts() {
@@ -198,6 +200,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
+    // Segue to details view
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let cell = sender as! UITableViewCell
         if let indexPath = tableView.indexPath(for: cell) {

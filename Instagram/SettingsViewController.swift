@@ -49,6 +49,8 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         // Dispose of any resources that can be recreated.
     }
     
+    
+    // Log user out
     @IBAction func didLogOut(_ sender: Any) {
         PFUser.logOutInBackground { (error: Error?) in
         }
@@ -77,10 +79,12 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         self.present(alert, animated: true, completion: nil)
     }
     
+    // Empty text
     func textFieldDidBeginEditing(_ textField: UITextField) {
         aboutLabel.text = nil
     }
     
+    // Save bio
     func textFieldDidEndEditing(_ textField: UITextField) {
         if aboutLabel.text == "" {
             aboutLabel.text = "..."
@@ -97,6 +101,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         })
     }
     
+    // Hide keyboard on return
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         aboutLabel.resignFirstResponder()
         return true
@@ -150,10 +155,12 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         collectionView.reloadData()
     }
     
+    // Return amount of cells
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return posts.count
     }
     
+    // Set up photo cells
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileCell", for: indexPath) as! ExploreCell
         
@@ -171,6 +178,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         return cell
     }
     
+    // Set up details segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let cell = sender as! UICollectionViewCell
         if let indexPath = collectionView.indexPath(for: cell) {

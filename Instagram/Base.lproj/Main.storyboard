@@ -574,7 +574,7 @@
         <scene sceneID="E9g-ap-GMy">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dZw-nI-VRI" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="User" image="gear-icon" id="cAX-zd-rdp"/>
+                    <tabBarItem key="tabBarItem" title="User" image="user-icon" id="cAX-zd-rdp"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="vhH-kj-zDa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -613,9 +613,9 @@
         <image name="camera-icon" width="24" height="24"/>
         <image name="comment" width="25" height="25"/>
         <image name="explore-icon" width="24" height="24"/>
-        <image name="gear-icon" width="24" height="24"/>
         <image name="heart" width="25" height="25"/>
         <image name="home-icon" width="24" height="24"/>
+        <image name="user-icon" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gCp-HV-Ked"/>

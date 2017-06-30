@@ -78,14 +78,15 @@ class PostDetailsViewController: UIViewController {
     @IBAction func didLikePost(_ sender: Any) {
         var likesText = likesLabel.text ?? "0 likes"
         var likesAmount = Int(String(likesText.characters.dropLast(6)))!
+        if heartImage.isHighlighted {
+            heartImage.isHighlighted = false
+            likesAmount -= 2
+        } else {
+            heartImage.isHighlighted = true
+        }
         likesAmount += 1
         likesLabel.text = "\(likesAmount) likes"
         post?["likesCount"] = likesAmount
-        if heartImage.backgroundColor == UIColor.white {
-            heartImage.backgroundColor = UIColor.red
-        } else {
-            heartImage.backgroundColor = UIColor.white
-        }
         post?.saveInBackground(block: { (success: Bool, error: Error?) in
             // TODO: add alerts
         })

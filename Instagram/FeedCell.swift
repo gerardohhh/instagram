@@ -37,14 +37,15 @@ class FeedCell: UITableViewCell {
     @IBAction func didLikePost(_ sender: Any) {
         var likesText = likesLabel.text ?? "0 likes"
         var likesAmount = Int(String(likesText.characters.dropLast(6)))!
+        if likeImage.isHighlighted {
+            likeImage.isHighlighted = false
+            likesAmount -= 2
+        } else {
+            likeImage.isHighlighted = true
+        }
         likesAmount += 1
         likesLabel.text = "\(likesAmount) likes"
         post?["likesCount"] = likesAmount
-        if likeImage.backgroundColor == UIColor.white {
-            likeImage.backgroundColor = UIColor.red
-        } else {
-            likeImage.backgroundColor = UIColor.white
-        }
         post?.saveInBackground(block: { (success: Bool, error: Error?) in
             // TODO: add alerts
         })

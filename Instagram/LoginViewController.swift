@@ -9,16 +9,20 @@
 import UIKit
 import Parse
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         loginButton.layer.cornerRadius = 5
+        
+        usernameField.delegate = self
+        passwordField.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -28,6 +32,28 @@ class LoginViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        UIButton.animate(withDuration: 0.3) {
+            var frame = self.signUpButton.frame
+            if frame.origin.y == 614 {
+                frame.origin.y -= 240
+            }
+            
+            self.signUpButton.frame = frame
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        UIButton.animate(withDuration: 0.3) {
+            var frame = self.signUpButton.frame
+            if frame.origin.y == 374 {
+                frame.origin.y += 240
+            }
+            
+            self.signUpButton.frame = frame
+        }
     }
     
     @IBAction func onSignIn(_ sender: Any) {

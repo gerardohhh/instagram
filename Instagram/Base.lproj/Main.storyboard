@@ -78,7 +78,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" title="Sign Up">
-                                    <color key="titleColor" red="0.41903933879999999" green="0.56087565419999996" blue="0.90593552590000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="titleColor" red="0.43198822035686096" green="0.58193979303524712" blue="0.95584431397106606" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <connections>
                                     <action selector="onSignUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eve-Zv-GqA"/>
@@ -92,6 +92,7 @@
                     <connections>
                         <outlet property="loginButton" destination="wFE-Gc-0vR" id="wBC-Js-LdB"/>
                         <outlet property="passwordField" destination="utX-gS-qPW" id="efY-gx-XgW"/>
+                        <outlet property="signUpButton" destination="hqX-lo-ka3" id="7sD-Bs-tuT"/>
                         <outlet property="usernameField" destination="cXn-Ua-Afm" id="gFZ-fA-s0L"/>
                         <segue destination="tJq-fe-Op7" kind="presentation" identifier="loginSegue" id="erw-Hr-DL2"/>
                     </connections>

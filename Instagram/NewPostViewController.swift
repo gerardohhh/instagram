@@ -123,6 +123,7 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
         if textHasBeenEdited == false {
             captionText.text = ""
         }
+        self.view.endEditing(true)
         // Check for attached image
         if newPostImage.image != nil {
             // Resize image
@@ -132,8 +133,7 @@ class NewPostViewController: UIViewController, UIImagePickerControllerDelegate, 
             // Post image
             Post.postUserImage(image: resizedImage, withCaption: captionText.text, withCompletion: { (success: Bool, error: Error?) in
                 if success {
-                    // Clear post data, hide keyboard
-                    self.view.endEditing(true)
+                    // Clear post data
                     self.newPostImage.image = nil
                     self.imageButton.isHidden = false
                 } else {

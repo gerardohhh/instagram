@@ -6,7 +6,7 @@ Time spent: **30** hours spent in total
 
 ## User Stories
 
-The following **required** functionality is completed:
+The following functionality is completed:
 
 - [x] User can sign up to create a new account using Parse authentication
 - [x] User can log in and log out of his or her account
@@ -17,28 +17,14 @@ The following **required** functionality is completed:
 - [x] User can tap a post to view post details, including timestamp and creator
 - [x] User can use a tab bar to switch between all "Instagram" posts and posts published only by the user.
 
-The following **optional** features are implemented:
+The following additional features are implemented:
 
 - [x] Show the username and creation time for each post
 - [x] User can load more posts once he or she reaches the bottom of the feed using infinite Scrolling
-- [ ] After the user submits a new post, show a progress HUD while the post is being uploaded to Parse.
-- [ ] User Profiles:
 - [x] Allow the logged in user to add a profile photo
 - [x] Display the profile photo with each post
-- [ ] Tapping on a post's username or profile photo goes to that user's profile page
-- [ ] User can comment on a post and see all comments for each post in the post details screen.
 - [x] User can like a post and see number of likes for each post in the post details screen.
 - [x] Run your app on your phone and use the camera to take the photo
-
-
-The following **additional** features are implemented:
-
-- [ ] List anything else that you can get done to improve the app functionality!
-
-Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
-
-1. Include images from other peoples' databases in my explore feed
-2. Incorporate comments and improved likes
 
 ## Video Walkthrough
 
@@ -46,18 +32,10 @@ Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/gerardohhh/instagram/blob/master/instagram%20walkthrough.gif?raw=true' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
-
 ## Credits
-
-List an 3rd party libraries, icons, graphics, or other assets you used in your app.
 
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking) - networking task library
 
-
-## Notes
-
-Describe any challenges encountered while building the app.
 
 ## License
 
